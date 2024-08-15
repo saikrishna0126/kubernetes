@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-rs-svc
+  labels: 
+    app: nginx
+    purpose: service-demo
+spec: 
+  replicas: 3
+  minReadySeconds: 5
+  selector:
+    matchLabels:
+      app: nginx
+  template: 
+    metadata:
+      labels: 
+        app: nginx
+    spec: 
+      containers: 
+        - name: nginx-svc
+          image: nginx:1.25
+          ports: 
+            - containerPort: 80
+              protocol: 80

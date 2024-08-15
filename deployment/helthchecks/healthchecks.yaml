@@ -1,0 +1,50 @@
+---
+apiVersion: v1 
+kind: Namespace
+metadata:
+  name: prod
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: healthcheck
+  namespace: prod
+spec:
+  minReadySeconds: 5
+  replicas: 6
+  selector: 
+    matchLabels: 
+      app: webapp
+  strategy: 
+    type: RollingUpdate
+    rollingUpdate: 
+      maxSurge: 50%
+      maxUnavailable: 50%
+  template: 
+    metadata: 
+      labels: 
+        app: webapp
+    spec: 
+      containers: 
+        - name: web-app-deployment
+          image: saikrishna38721/a1
+          ports:
+            - name: web-app
+              containerPort: 80
+              protocol: TCP
+          livenessProbe: 
+            httpGet: 
+              path: /
+              port: web-app
+            failureThreshold: 3
+            periodSeconds: 1
+            successThreshold: 1
+          readinessProbe: 
+            httpGet: 
+              path: /
+              port: web-app
+            failureThreshold: 2
+            periodSeconds: 1
+            successThreshold: 2
+

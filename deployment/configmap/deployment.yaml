@@ -1,0 +1,19 @@
+---
+apiVersion: v1 
+kind: Pod
+metadata:
+  name: secrete-cm
+  labels:
+    app: demo
+spec:
+  containers:
+    - name: secrete-cm
+      image: alpine
+      command: 
+        - sleep
+        - 1d
+      envFrom: 
+        - configMapRef:
+            name: user-name
+        - secretRef:
+            name: password
